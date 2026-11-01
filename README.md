@@ -18,6 +18,31 @@ Ohne eigene Anlage läuft die App im **Demo-Modus** mit synthetischen Daten – 
 - **Zugriffsschutz**: optionales Passwort, wenn die App im Heimnetz erreichbar ist.
 - **Barrierearm**: Legende, Direktbeschriftung und Tabellenansicht zu jedem Diagramm, Dark Mode, `prefers-reduced-motion`.
 
+## Technologien
+
+Durchgehend **TypeScript** (strict) als npm-Workspace-Monorepo; Backend und Frontend teilen sich die Typen des API-Vertrags.
+
+| Bereich | Technologie | Wofür |
+|---|---|---|
+| Laufzeit | [Node.js](https://nodejs.org/) ≥ 20.19 (Docker: 22) | Backend, Build, Tests |
+| Backend | [Fastify](https://fastify.dev/) 5 | REST-API, Auslieferung des Frontends (`@fastify/static`), HTTPS |
+| | [Zod](https://zod.dev/) 3 | Validierung von Konfiguration, Query-Parametern und externen API-Antworten |
+| | [node-postgres](https://node-postgres.com/) (`pg`) 8 | Datenbankzugriff mit eigenen SQL-Migrationen |
+| | [selfsigned](https://github.com/jfromaniello/selfsigned) | Selbst signiertes Zertifikat für lokales HTTPS |
+| Frontend | [React](https://react.dev/) 19 | Dashboard |
+| | [Vite](https://vite.dev/) 8 | Entwicklungsserver mit Proxy zur API, Produktions-Build |
+| | SVG und CSS ohne Chart-Bibliothek | Energiefluss, Zeitreihen- und Balkendiagramme, Hell/Dunkel über CSS-Variablen |
+| Datenbank | [PostgreSQL](https://www.postgresql.org/) 17 | Dauerhafte Messwerte (optional, sonst Arbeitsspeicher) |
+| Externe Dienste | [Sungrow iSolarCloud OpenAPI](https://developer-api.isolarcloud.eu) | Mess- und Verlaufsdaten der Anlage (OAuth 2.0) |
+| | [Open-Meteo](https://open-meteo.com/) | Wettervorhersage und Einstrahlung für die PV-Prognose, ohne API-Schlüssel |
+| Build | [tsup](https://tsup.egoist.dev/) | Bündelt das Backend |
+| | [tsx](https://tsx.is/) | Backend im Entwicklungsmodus mit Neustart bei Änderungen |
+| | [concurrently](https://github.com/open-cli-tools/concurrently) | Startet API und Frontend gemeinsam (`npm run dev`) |
+| Qualität | [Vitest](https://vitest.dev/) 3 | Unit- und API-Tests |
+| | [ESLint](https://eslint.org/) 9 mit [typescript-eslint](https://typescript-eslint.io/) | Statische Analyse inkl. React-Hooks-Regeln |
+| Betrieb | [Docker](https://www.docker.com/) und Docker Compose | Mehrstufiges Image (`node:22-alpine`), App mit PostgreSQL |
+| | [GitHub Actions](https://github.com/features/actions) | CI: Lint, Typecheck, Tests, Build, Docker-Build |
+
 ## Ausprobieren
 
 ### Variante 1: Node.js (am schnellsten)

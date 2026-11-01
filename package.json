@@ -1,0 +1,37 @@
+{
+  "name": "home-energy-flow",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Energiefluss-Dashboard für ein Einfamilienhaus mit PV-Anlage, Batteriespeicher und Sungrow-Hybridwechselrichter",
+  "author": "Milan Neukamm",
+  "license": "MIT",
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "engines": {
+    "node": ">=20.19"
+  },
+  "scripts": {
+    "dev": "concurrently -n api,web -c blue,green \"npm run dev -w @hef/api\" \"npm run dev -w @hef/web\"",
+    "build": "npm run build -w @hef/web && npm run build -w @hef/api",
+    "start": "npm run start -w @hef/api",
+    "test": "vitest run",
+    "typecheck": "tsc -p packages/energy-domain && tsc -p apps/api && tsc -p apps/web",
+    "lint": "eslint .",
+    "db:migrate": "npm run db:migrate -w @hef/api",
+    "sungrow:inspect": "npm run sungrow:inspect -w @hef/api"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.30.0",
+    "@types/node": "^22.15.0",
+    "concurrently": "^9.2.0",
+    "eslint": "^9.30.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "globals": "^16.3.0",
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.35.0",
+    "vitest": "^3.2.4"
+  }
+}

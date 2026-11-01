@@ -1,0 +1,35 @@
+services:
+  db:
+    image: postgres:17-alpine
+    # Startet mit Docker Desktop mit, bis der Container bewusst gestoppt wird
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: hef
+      POSTGRES_PASSWORD: hef
+      POSTGRES_DB: home_energy_flow
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hef -d home_energy_flow"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    ports:
+      # DB_PORT in .env ändern, wenn lokal schon eine PostgreSQL auf 5432 läuft
+      - "${DB_PORT:-5432}:5432"
+
+  app:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      DATABASE_URL: postgres://hef:hef@db:5432/home_energy_flow
+    ports:
+      - "3000:3000"
+
+volumes:
+  db-data:

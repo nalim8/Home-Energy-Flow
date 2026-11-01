@@ -1,0 +1,10 @@
+**/node_modules
+**/dist
+coverage
+.env
+.git
+Home-Energy-Flow
+*.log
+config.json
+.sungrow-token.json
+.certs

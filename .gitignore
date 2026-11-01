@@ -1,0 +1,14 @@
+node_modules/
+dist/
+coverage/
+.env
+*.log
+.DS_Store
+.vscode/
+.idea/
+
+# Zugangsdaten – niemals einchecken
+config.json
+.sungrow-token.json
+.sungrow-token.json.tmp
+.certs/
